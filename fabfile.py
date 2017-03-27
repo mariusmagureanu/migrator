@@ -26,7 +26,8 @@ def clean():
 
 
 def deps():
-    libs = 'nose pep8 autopep8 pyresttest flask flask_restful flask-restful-swagger'
+    libs = 'nose pep8 autopep8 pyresttest ' \
+           'flask flask_restful flask-restful-swagger'
     local('%s install %s' % (pip, libs), capture=False)
 
 
