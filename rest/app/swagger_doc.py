@@ -60,10 +60,7 @@ migrate_vcl_3_to_4 = {
         },
     ],
     'responseMessages': [
-        {
-            "code": 201,
-            "message": "Content the migrated vcl."
-        },
+        code_202_message,
         code_400_message,
         code_500_message
     ]}
@@ -83,10 +80,7 @@ migrate_vcl_3_to_5 = {
         },
     ],
     'responseMessages': [
-        {
-            "code": 201,
-            "message": "Content the migrated vcl."
-        },
+        code_202_message,
         code_400_message,
         code_500_message
     ]}
