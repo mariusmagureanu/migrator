@@ -15,6 +15,7 @@ pip = 'pip'
 nose_tests = 'nosetests --with-coverage --cover-package=rest.app -v'
 
 
+@task
 def clean():
     """
     Removes all *.pyc files.
@@ -26,6 +27,7 @@ def clean():
           capture=False)
 
 
+@task
 def run(port=8001):
     """
     Run the migration server.
@@ -34,6 +36,7 @@ def run(port=8001):
     start_server(port)
 
 
+@task
 def deps():
     """
     Install required dependencies.
@@ -43,6 +46,7 @@ def deps():
     local('%s install %s' % (pip, libs), capture=False)
 
 
+@task
 def test():
     """
     Runs unit-tests and checks .py files
