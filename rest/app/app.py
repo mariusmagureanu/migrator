@@ -303,7 +303,12 @@ api.add_resource(MigrationStatus, '/task/<string:file_name>')
 
 atexit.register(at_exit)
 
-if __name__ == "__main__":
+
+def start_server(port):
     log("Flask application has started.")
     log("Current working directory: %s" % cwd)
-    app.run(host='0.0.0.0', port=8001, threaded=True)
+    app.run(host='0.0.0.0', port=port, threaded=True)
+
+
+if __name__ == "__main__":
+    start_server(8001)

@@ -6,6 +6,7 @@ import fabric.contrib.files
 from fabric import colors
 from fabric.api import *
 
+from rest.app.app import start_server
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,14 +19,25 @@ def clean():
     """
     Removes all *.pyc files.
     """
-    print 'Number of .pyc files we found was: %s' % \
-          local("find . -iname '*.pyc' | wc -l")
+    print ('Number of .pyc files we found was: %s' %
+           local("find . -iname '*.pyc' | wc -l"))
     local("find  . -iname '*.pyc' -delete", capture=False)
     local("find  . -name '_trial_temp' -prune -exec rm -r '{}' \;",
           capture=False)
 
 
+def run(port=8001):
+    """
+    Run the migration server.
+    :return:
+    """
+    start_server(port)
+
+
 def deps():
+    """
+    Install required dependencies.
+    """
     libs = 'nose pep8 autopep8 pyresttest ' \
            'flask flask_restful flask-restful-swagger'
     local('%s install %s' % (pip, libs), capture=False)
@@ -51,9 +63,9 @@ def test():
     pep8_ec = p_pep8_test.wait()
 
     if pep8_ec:
-        print ' PEP8 '.center(80, '-')
-        print colors.red(pep8_std_out)
-        print '-' * 80
+        print (' PEP8 '.center(80, '-'))
+        print (colors.red(pep8_std_out))
+        print ('-' * 80)
 
     overall_status = pep8_ec
     if overall_status != 0:
