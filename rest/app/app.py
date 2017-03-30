@@ -4,8 +4,10 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import uuid
+import warnings
 from httplib import (
     ACCEPTED,
     BAD_REQUEST,
@@ -16,12 +18,21 @@ from httplib import (
     SEE_OTHER,
 )
 
+from flask.exthook import ExtDeprecationWarning
+warnings.simplefilter('ignore', ExtDeprecationWarning)
+
 import flask
 from flask import Flask, request, send_from_directory
 from flask.views import MethodView
 from flask_restful import Api
 from flask_restful_swagger import swagger
-from swagger_doc import get_vcl, migrate_vcl_3_to_4, migrate_vcl_3_to_5, migration_task_status
+from swagger_doc import (
+    get_vcl,
+    migrate_vcl_3_to_4,
+    migrate_vcl_3_to_5,
+    migration_task_status,
+)
+
 
 app = Flask(__name__)
 api = swagger.docs(Api(app), apiVersion='0.1',
@@ -29,7 +40,12 @@ api = swagger.docs(Api(app), apiVersion='0.1',
 
 app.config.from_pyfile('default.cfg', silent=True)
 
-file_handler = logging.FileHandler(app.config['LOG_FILE'])
+try:
+    file_handler = logging.FileHandler(app.config['LOG_FILE'])
+except IOError as ioe:
+    print(ioe.args[0])
+    sys.exit(1)
+
 file_handler.setFormatter(logging.Formatter(
     '%(asctime)s %(levelname)s: %(message)s '
     '[in %(pathname)s:%(lineno)d]'
