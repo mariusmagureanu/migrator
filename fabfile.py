@@ -1,12 +1,17 @@
 from __future__ import with_statement
 import os
+import sys
 import subprocess
 
 import fabric.contrib.files
 from fabric import colors
 from fabric.api import *
 
-from rest.app.app import start_server
+try:
+    from rest.app.app import start_server
+except ImportError as ie:
+    print(ie.args[0])
+
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 
@@ -33,7 +38,11 @@ def run(port=8001):
     Run the migration server.
     :return:
     """
-    start_server(port)
+    try:
+        start_server(port)
+    except Exception as ex:
+        print(ex.args[0])
+        sys.exit(1)
 
 
 @task
